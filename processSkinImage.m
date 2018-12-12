@@ -43,7 +43,7 @@ function image_out = processSkinImage(filename)
         image_out(r(i),c(i)) = 1;
     end
 
-    imshow(image_out);
+    %imshow(image_out);
     image_out = imresize(image_out, scale);
 
 end
