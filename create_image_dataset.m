@@ -29,7 +29,6 @@ for k=1:length(Files)
     % Create the image label depending on the folder name
     % Ex. [1 0 0 0] - left folder
     label = ismember(label_keys, folder);
-    idx = find(label == 1);
     y = [y; label];
 
     % Extract file name
