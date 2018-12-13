@@ -32,7 +32,7 @@ Theta2_grad = zeros(size(Theta2));
 
 
 % Feedforward the neural network and return the cost in the variable J
-sum = 0;
+summary = 0;
 for j = 1:m
 
     y_label = y(j,:);
@@ -52,7 +52,7 @@ for j = 1:m
 
     sum_temp = 0;
     sum_temp = (-y_label .* log(h)) - ((1 - y_label) .* log(1 - h));
-    sum = sum + sum(sum_temp); 
+    summary = summary + sum(sum_temp); 
 
     
 % Implement Backpropagation algorithm
@@ -79,7 +79,7 @@ end;
 % Add Regularization
 regularization = (lambda/(2*m)) * (sum(sum(Theta1(:,2:end) .^ 2, 2)) + sum(sum(Theta2(:,2:end) .^ 2, 2)));
 
-J = (sum/m) + regularization;
+J = (summary/m) + regularization;
 
 Theta1_grad(:,1) = Theta1_grad(:,1) ./ m;
 Theta2_grad(:,1) = Theta2_grad(:,1) ./ m;
