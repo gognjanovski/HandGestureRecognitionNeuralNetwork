@@ -1,14 +1,19 @@
 %% Setup the parameters you will use for this exercise
-input_layer_size  = 2500;  % 20x20 Input Images of Digits
+input_layer_size  = 2500;  % 50x50 Input Images of Digits
 hidden_layer_size = 25;   % 25 hidden units
-num_labels = 4;          % 10 labels, from 1 to 10   
-                          % (note that we have mapped "0" to label 10)
+num_labels = 4;          % 4 labels 
 
+% Proccessed image features with 2500 columns for each row
+% since there are 2500 pixels (50x50) from every processed image
 X = dlmread('x_features');
+
+% Labels for each processed training image 
+%[1 0 0 0] - left, [0 1 0 0] - right, [0 0 1 0] - palm, [0 0 0 1] - peace
 y = dlmread('y_labels');
 
 label_keys = { 'left', 'right', 'palm', 'peace'};
 
+% Initialize random weights for start
 initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
 initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
 
@@ -16,14 +21,10 @@ initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
 initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];
 
 
-%  After you have completed the assignment, change the MaxIter to a larger
-%  value to see how more training helps.
-options = optimset('MaxIter', 50);
-
-%  You should also try different values of lambda
+options = optimset('MaxIter', 100);
 lambda = 1;
 
-% Create "short hand" for the cost function to be minimized
+% Create the cost function that needs to be minimized
 costFunction = @(p) nnCostFunction(p, ...
                                    input_layer_size, ...
                                    hidden_layer_size, ...
@@ -40,28 +41,35 @@ Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
 Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
                  num_labels, (hidden_layer_size + 1));
 
-
+% Make the prediction based on obtained Theta values
 pred = predict(Theta1, Theta2, X);
 
+% Compare the prediction with the actual values
 [val idx] = max(y, [], 2);
 fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == idx)) * 100);
 
 
+
+% Predict multiple test images
 test_img = processSkinImage("test/test1.jpg");
+imshow(test_img);
 pred = predict(Theta1, Theta2, test_img(:)')
 fprintf('\nType: %s\n', label_keys{pred});
 pause;
 
 test_img = processSkinImage("test/test2.jpg");
+imshow(test_img);
 pred = predict(Theta1, Theta2, test_img(:)')
 fprintf('\nType: %s\n', label_keys{pred});
 pause;
 
 test_img = processSkinImage("test/test3.jpg");
+imshow(test_img);
 pred = predict(Theta1, Theta2, test_img(:)')
 fprintf('\nType: %s\n', label_keys{pred});
 pause;
 
 test_img = processSkinImage("test/test4.jpg");
+imshow(test_img);
 pred = predict(Theta1, Theta2, test_img(:)')
 fprintf('\nType: %s\n', label_keys{pred});
