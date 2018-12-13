@@ -8,9 +8,9 @@ function W = randInitializeWeights(L_in, L_out)
 % Note that W should be set to a matrix of size(L_out, 1 + L_in) as
 % the first column of W handles the "bias" terms
 
-
+epsilon = sqrt(6) / (L_in + L_out);
 
 W = zeros(L_out, 1 + L_in);
-W = (rand(L_out, 1 + L_in) * 2 * 0.12) - 0.12;
+W = (rand(L_out, 1 + L_in) * 2 * epsilon) - epsilon;
 
 end
