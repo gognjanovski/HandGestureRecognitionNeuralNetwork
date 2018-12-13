@@ -15,17 +15,6 @@ function image_out = processSkinImage(filename)
     original = imread(filename);
     [M N Z] = size(original);
 
-    % Get the central color of the image
-    % Expected the hand to be in the central of the image
-    central_color = original(int32(M/2),int32(N/2),:);
-    % Convert to YCbCr
-    central_color_ycbcr = rgb2ycbcr(central_color);
-    Cb_Color = central_color_ycbcr(:,:,2);
-    Cr_Color = central_color_ycbcr(:,:,3);
-    % Set the range
-    Cb_Difference = 15;
-    Cr_Difference = 10;
-
     % Read the image, and capture the dimensions
     height = size(original,1);
     width = size(original,2);
@@ -37,6 +26,15 @@ function image_out = processSkinImage(filename)
     img_ycbcr = rgb2ycbcr(original);
     Cb = img_ycbcr(:,:,2);
     Cr = img_ycbcr(:,:,3);
+
+    % Get the central color of the image
+    % Expected the hand to be in the central of the image
+    central_color = img_ycbcr(int32(M/2),int32(N/2),:);
+    Cb_Color = central_color(:,:,2);
+    Cr_Color = central_color(:,:,3);
+    % Set the range
+    Cb_Difference = 15;
+    Cr_Difference = 10;
  
     % Detect skin pixels
     [r,c,v] = find(Cb>=Cb_Color-Cr_Difference & Cb<=Cb_Color+Cb_Difference & Cr>=Cr_Color-Cr_Difference & Cr<=Cr_Color+Cr_Difference);
