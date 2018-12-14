@@ -41,8 +41,10 @@ for k=1:length(Files)
     % Returns 50x50 image
     image_out = processSkinImage(fileLocation);
 
+    % Generate random number from 1 to 10
     randNum = ceil(rand() * 10);
 
+    % Split the images in 80%-20% train-test set
     if randNum > 2
         % Create the features for the image  
         X_train = [X_train; image_out(:)'];
