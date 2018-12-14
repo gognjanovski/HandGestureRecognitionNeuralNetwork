@@ -18,12 +18,16 @@ function image_out = processSkinImage(filename)
     % Read the image, and capture the dimensions
     height = size(original,1);
     width = size(original,2);
+    
+    % Resize the image to 50x50
+    image_resized = imresize(original, scale);
+    [M N Z] = size(image_resized);
 
     % Initialize the output image
-    image_out = zeros(height,width);
+    image_out = zeros(M,N);
 
     % Convert the image from RGB to YCbCr
-    img_ycbcr = rgb2ycbcr(original);
+    img_ycbcr = rgb2ycbcr(image_resized);
     Cb = img_ycbcr(:,:,2);
     Cr = img_ycbcr(:,:,3);
 
@@ -47,7 +51,5 @@ function image_out = processSkinImage(filename)
 
     %imshow(image_out);
 
-    % Resize the image to 50x50
-    image_out = imresize(image_out, scale);
 
 end

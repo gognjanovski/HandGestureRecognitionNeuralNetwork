@@ -65,11 +65,12 @@ for j = 1:m
 
 end;
 
-% Add Regularization
+% Add regularization to the cost
 regularization = (lambda/(2*m)) * (sum(sum(Theta1(:,2:end) .^ 2, 2)) + sum(sum(Theta2(:,2:end) .^ 2, 2)));
 
 J = (summary/m) + regularization;
 
+% Add regularization to the gradient
 Theta1_grad(:,1) = Theta1_grad(:,1) ./ m;
 Theta2_grad(:,1) = Theta2_grad(:,1) ./ m;
 Theta1_grad(:,2:end) = (Theta1_grad(:,2:end) ./ m) + ((lambda ./ m) * Theta1(:,2:end));

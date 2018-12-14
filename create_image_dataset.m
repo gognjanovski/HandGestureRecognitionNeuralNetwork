@@ -12,8 +12,10 @@ mkdir('dataset_resized/peace');
 
 label_keys = { 'left', 'right', 'palm', 'peace'};
 
-X = [];
-y = [];
+X_train = [];
+y_train = [];
+X_test = [];
+y_test = [];
 
 % Read all the dataset images
 Files=dir('dataset/*/*.jpg');
@@ -29,7 +31,6 @@ for k=1:length(Files)
     % Create the image label depending on the folder name
     % Ex. [1 0 0 0] - left folder
     label = ismember(label_keys, folder);
-    y = [y; label];
 
     % Extract file name
     filename = strsplit(FileNames, '.');
@@ -40,8 +41,16 @@ for k=1:length(Files)
     % Returns 50x50 image
     image_out = processSkinImage(fileLocation);
 
-    % Create the features for the image  
-    X = [X; image_out(:)'];
+    randNum = ceil(rand() * 10);
+
+    if randNum > 2
+        % Create the features for the image  
+        X_train = [X_train; image_out(:)'];
+        y_train = [y_train; label];
+    else 
+        X_test = [X_test; image_out(:)'];
+        y_test = [y_test; label];
+    endif
 
     % Write the proceessed image in dataset_resized folder
     output_folder = strcat('dataset_resized', '/', folder, '/', name, '_resized.', extension);
@@ -49,6 +58,11 @@ for k=1:length(Files)
     
 end
 
-% Write the features and labels in file
-dlmwrite('x_features', X);
-dlmwrite('y_labels', y);
+% Write the train features and labels in file
+dlmwrite('x_features_train', X_train);
+dlmwrite('y_labels_train', y_train);
+
+
+% Write the test features and labels in file
+dlmwrite('x_features_test', X_test);
+dlmwrite('y_labels_test', y_test);
