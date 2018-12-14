@@ -47,8 +47,6 @@ for j = 1:m
     a_three = sigmoid(z_two);
     h = a_three;
 
-    size(a_two);
-    size(Theta2);
 
     sum_temp = 0;
     sum_temp = (-y_label .* log(h)) - ((1 - y_label) .* log(1 - h));
@@ -57,22 +55,13 @@ for j = 1:m
     
 % Implement Backpropagation algorithm
  
-    a_one = X(j,:);
-    a_one = [1 a_one];
-    z_one = Theta1 * a_one';
-    a_two = sigmoid(z_one);
-    %m_temp = size(a_two, 1);
-    a_two = [1; a_two];
-    z_two = Theta2 * a_two;
-    a_three = sigmoid(z_two);
+    d3 = (a_three .- y_label);
+    z_one = [1 z_one];
+    d2 = (d3 * Theta2) .* sigmoidGradient(z_one);
+    d2 = d2(:, 2:end);
 
-    d3 = (a_three .- y_label');
-    z_one = [1 ; z_one];
-    d2 = (Theta2' * d3) .* sigmoidGradient(z_one);
-    d2 = d2(2:end);
-
-    Theta2_grad = Theta2_grad + d3 * a_two';
-    Theta1_grad = Theta1_grad + d2 * a_one;
+    Theta1_grad = Theta1_grad + d2' * a_one;
+    Theta2_grad = Theta2_grad + d3' * a_two;
 
 end;
 
@@ -85,8 +74,6 @@ Theta1_grad(:,1) = Theta1_grad(:,1) ./ m;
 Theta2_grad(:,1) = Theta2_grad(:,1) ./ m;
 Theta1_grad(:,2:end) = (Theta1_grad(:,2:end) ./ m) + ((lambda ./ m) * Theta1(:,2:end));
 Theta2_grad(:,2:end) = (Theta2_grad(:,2:end) ./ m) + ((lambda ./ m) * Theta2(:,2:end));
-
-
 
 % -------------------------------------------------------------
 
