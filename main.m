@@ -44,21 +44,29 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
                  num_labels, (hidden_layer_size + 1));
 
 % Make the prediction based on obtained Theta values
+pred = predict(Theta1, Theta2, X_train);
+
+% Compare the prediction with the actual values
+[val idx] = max(y_train, [], 2);
+fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == idx)) * 100);
+
+% Make the prediction based on obtained Theta values
 pred = predict(Theta1, Theta2, X_test);
 
 % Compare the prediction with the actual values
 [val idx] = max(y_test, [], 2);
-fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == idx)) * 100);
+fprintf('\nTest Set Accuracy: %f\n', mean(double(pred == idx)) * 100);
 
 
 
-% Predict multiple test images
+
 test_img = processSkinImage("test/test1.jpg");
 imshow(test_img);
 pred = predict(Theta1, Theta2, test_img(:)')
 fprintf('\nType: %s\n', label_keys{pred});
 pause;
 
+% Predict multiple test images
 test_img = processSkinImage("test/test2.jpg");
 imshow(test_img);
 pred = predict(Theta1, Theta2, test_img(:)')
