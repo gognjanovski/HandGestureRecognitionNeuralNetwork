@@ -23,7 +23,7 @@ initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
 initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];
 
 
-options = optimset('MaxIter', 150);
+options = optimset('MaxIter', 100);
 lambda = 1;
 
 % Create the cost function that needs to be minimized
@@ -48,14 +48,14 @@ pred = predict(Theta1, Theta2, X_train);
 
 % Compare the prediction with the actual values
 [val idx] = max(y_train, [], 2);
-fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == idx)) * 100);
+fprintf('\nTraining Set Accuracy: %f%%\n', mean(double(pred == idx)) * 100);
 
 % Make the prediction based on obtained Theta values
 pred = predict(Theta1, Theta2, X_test);
 
 % Compare the prediction with the actual values
 [val idx] = max(y_test, [], 2);
-fprintf('\nTest Set Accuracy: %f\n', mean(double(pred == idx)) * 100);
+fprintf('\nTest Set Accuracy: %f%%\n', mean(double(pred == idx)) * 100);
 
 
 
